@@ -1,0 +1,20 @@
+{% extends "_page_template.html" %}
+{% block body %}
+    <div class="container">
+        <p class="" onclick="()=>{history.back()}">&larr; Back</p>
+        {% include "component/image-stack.html" %}
+        <div class="metadata-container">
+            <h2>Metadata Entry</h2>
+            <label for="title">Title</label>
+            <input type="text" id="title" placeholder="Enter image title">
+
+            <label for="description">Description</label>
+            <textarea id="description" placeholder="Enter description"></textarea>
+
+            <label for="tags">Tags</label>
+            <input type="text" id="tags" placeholder="Comma-separated tags">
+
+            <button id="saveBtn">Save Metadata</button>
+        </div>
+    </div>
+{% endblock %}
