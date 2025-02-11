@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Request, Depends, HTTPException
+from fastapi import FastAPI, Request, Response, Depends, HTTPException
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -6,6 +6,8 @@ from sqlalchemy import create_engine, Column, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, Session
 import uuid
+
+from immich.ImmichClient import ImmichClient
 
 # FastAPI app
 app = FastAPI()
@@ -35,20 +37,50 @@ def get_db():
     finally:
         db.close()
 
+
+
 @app.get("/", response_class=HTMLResponse)
 async def root(request: Request, db: Session = Depends(get_db)):
-    albums = db.query(Album).all()
+    # albums = db.query(Album).all()
+    c = ImmichClient('http://localhost:2283/', "xnFmvnF4E2ijDXZPbCL8LjJm8kbdSwe85EvzD5VZA")
+    all_albums = c.list_albums()
+    a = all_albums[0]
+
+    thumb = f"/asset/{a['albumThumbnailAssetId']}/thumb"
+
     return templates.TemplateResponse(
-        request=request, name="index.html", context={"albums": albums}
+        request=request, name="index.html", context={
+            "albums": [],
+            "album_thumbnail": thumb,
+            "album_uuid": a['id']
+        }
     )
+
+@app.get("/asset/{asset_uuid}/thumb")
+async def root(request: Request, asset_uuid: str, db: Session = Depends(get_db)):
+    c = ImmichClient('http://localhost:2283/', "xnFmvnF4E2ijDXZPbCL8LjJm8kbdSwe85EvzD5VZA")
+    r = c.get_thumbnail(asset_uuid)
+    return Response(content=r.content)
+
 
 @app.get("/albums/{album_uuid}", response_class=HTMLResponse)
 async def get_album(request: Request, album_uuid: str, db: Session = Depends(get_db)):
     album = db.query(Album).filter(Album.id == album_uuid).first()
     # if not album:
     #     raise HTTPException(status_code=404, detail="Album not found")
+
+    c = ImmichClient('http://localhost:2283/', "xnFmvnF4E2ijDXZPbCL8LjJm8kbdSwe85EvzD5VZA")
+    all_albums = c.list_albums()
+    a = all_albums[0]
+
+    thumb = f"/asset/{a['albumThumbnailAssetId']}/thumb"
+
     return templates.TemplateResponse(
-        request=request, name="edit-metadata.html", context={"album": album}
+        request=request, name="edit-metadata.html", context={
+            "albums": [],
+            "album_thumbnail": thumb,
+            "album_uuid": a['id']
+        }
     )
 
 @app.post("/albums/", response_model=dict)

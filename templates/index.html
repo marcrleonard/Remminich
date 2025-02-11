@@ -1,12 +1,29 @@
 {% extends "_page_template.html" %}
 {% block body %}
-<div class="container">
-    <div class="nav-arrow left-arrow">&larr;</div>
-    {% include "component/image-stack.html" %}
-    <div class="nav-arrow right-arrow">&rarr;</div>
-</div>
 
-<div class="button-container">
-<a class="edit-metadata-btn" href="/albums/123-asd-234">Edit Metadata</a>
-</div>
+
+    <div class="container">
+        <h1>Tag some photos</h1>
+        <p>Swipe right to add info. Swipe left to skip.</p>
+
+        <!-- Flex container for the layout -->
+        <div class="photo-container">
+            <button class="btn pass">← Pass</button>
+
+            <div class="photo-card">
+                <img src="https://placehold.co/800x600" alt="Park Day" class="photo">
+                <div class="photo-info">
+                    <h2>Park Day</h2>
+                    <div class="meta">
+                        <p><strong>Dates:</strong> Unknown</p>
+                        <p><strong>Comments:</strong> 3</p>
+                        <p><strong>Location:</strong> Oregon State Zoo, Unknown</p>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn go">Let's go! →</button>
+        </div>
+    </div>
+
 {% endblock %}
