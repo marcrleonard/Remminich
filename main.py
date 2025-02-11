@@ -1,25 +1,60 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, Depends, HTTPException
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from sqlalchemy import create_engine, Column, String
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker, Session
+import uuid
 
+# FastAPI app
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
-
 templates = Jinja2Templates(directory="templates")
 
+# SQLite Database Setup
+DATABASE_URL = "sqlite:///./db.db"
+engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+Base = declarative_base()
+
+# Database Model
+class Album(Base):
+    __tablename__ = "albums"
+    id = Column(String, primary_key=True, index=True, default=lambda: str(uuid.uuid4()))
+    title = Column(String, index=True)
+
+# Create the database tables
+Base.metadata.create_all(bind=engine)
+
+# Dependency to get DB session
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
 @app.get("/", response_class=HTMLResponse)
-async def root(request: Request):
-    # return {"message": "Hello World"}
+async def root(request: Request, db: Session = Depends(get_db)):
+    albums = db.query(Album).all()
     return templates.TemplateResponse(
-        request=request, name="index.html", context={"id": id}
+        request=request, name="index.html", context={"albums": albums}
     )
 
 @app.get("/albums/{album_uuid}", response_class=HTMLResponse)
-async def root(request: Request, album_uuid:str):
-    # return {"message": "Hello World"}
+async def get_album(request: Request, album_uuid: str, db: Session = Depends(get_db)):
+    album = db.query(Album).filter(Album.id == album_uuid).first()
+    # if not album:
+    #     raise HTTPException(status_code=404, detail="Album not found")
     return templates.TemplateResponse(
-        request=request, name="edit-metadata.html", context={"album_uuid": album_uuid}
+        request=request, name="edit-metadata.html", context={"album": album}
     )
 
-
+@app.post("/albums/", response_model=dict)
+async def create_album(title: str, db: Session = Depends(get_db)):
+    new_album = Album(title=title)
+    db.add(new_album)
+    db.commit()
+    db.refresh(new_album)
+    return {"id": new_album.id, "title": new_album.title}
