@@ -47,11 +47,12 @@ async def root(request: Request, db: Session = Depends(get_db)):
     a = all_albums[0]
 
     thumb = f"/asset/{a['albumThumbnailAssetId']}/thumb"
-
+    print(a)
     return templates.TemplateResponse(
         request=request, name="index.html", context={
             "albums": [],
             "album_thumbnail": thumb,
+            "album_name": a['albumName'],
             "album_uuid": a['id']
         }
     )

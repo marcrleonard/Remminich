@@ -1,9 +1,11 @@
 body {
     font-family: Arial, sans-serif;
-    text-align: center;
     background-color: #f9f9f9;
     margin: 0;
-    /*padding: 20px;*/
+}
+
+.centered {
+        text-align: center;
 }
 
 .app-header {
@@ -73,6 +75,13 @@ p {
     border-radius: 10px 0 0 10px;
 }
 
+a.btn {
+  display: flex;
+  align-items: center; /* vertically centers */
+  justify-content: center; /* horizontally centers (optional) */
+  text-decoration: none;
+}
+
 .btn:hover {
     opacity: 0.8;
 }
@@ -105,4 +114,8 @@ h2 {
     font-size: 14px;
     color: #444;
     margin: 5px 0;
+}
+
+.metadata-container {
+    padding:20px
 }

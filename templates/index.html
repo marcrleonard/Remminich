@@ -2,7 +2,7 @@
 {% block body %}
 
 
-    <div class="container">
+    <div class="container centered">
         <h1>Tag some photos</h1>
         <p>Swipe right to add info. Swipe left to skip.</p>
 
@@ -11,9 +11,9 @@
             <button class="btn pass">← Pass</button>
 
             <div class="photo-card">
-                <img src="https://placehold.co/800x600" alt="Park Day" class="photo">
+                <img src="https://placehold.co/800x600" alt="" class="photo">
+                <h2>{{album_name}}</h2>
                 <div class="photo-info">
-                    <h2>Park Day</h2>
                     <div class="meta">
                         <p><strong>Dates:</strong> Unknown</p>
                         <p><strong>Comments:</strong> 3</p>
@@ -22,7 +22,7 @@
                 </div>
             </div>
 
-            <button class="btn go">Let's go! →</button>
+            <a class="btn go" href="/albums/{{album_uuid}}">Let's go! →</a>
         </div>
     </div>
 
