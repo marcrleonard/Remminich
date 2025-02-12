@@ -1,0 +1,104 @@
+---
+- name: Deploy Django app from Git repo
+  hosts: webserver
+  become: true
+
+  tasks:
+#    - name: Add dead snakes ppa
+#      apt_repository:
+#        validate_certs: no
+#        repo: 'ppa:deadsnakes/ppa'
+#        state: present
+
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+
+    - name: Install Python 3.10
+      apt:
+        name: python3.10
+        state: present
+
+    - name: Install Python 3.10 pip
+      apt:
+        name: python3-pip
+        state: present
+
+    - name: install nginx
+      apt:
+        name: [ 'nginx' ]
+        state: latest
+
+    - name: Clone Git repo
+      git:
+        repo: git@github.com:marcrleonard/ArtstreamApp.git
+        dest: /opt/my-django-app
+
+    - name: Install app dependencies
+      command: /usr/bin/pip install -r /opt/my-django-app/requirements.txt
+
+# this will remove the db if needed.
+    - name: Remove db (delete file)
+      ansible.builtin.file:
+        path: /opt/my-django-app/db.sqlite3
+        state: absent
+
+    - name: collect django static files
+      command: /usr/bin/python3.10 /opt/my-django-app/manage.py collectstatic --noinput
+
+    - name: Run Django migrations
+      command: /usr/bin/python3.10 /opt/my-django-app/manage.py migrate
+
+    - name: Run Django migrations app
+      command: /usr/bin/python3.10 /opt/my-django-app/manage.py migrate app
+
+    - name: Enable Nginx site
+      file:
+        src: /opt/my-django-app/deploy/django_site.conf
+        dest: /etc/nginx/sites-enabled/my-django-app
+        state: link
+
+    - name: Link Service File
+      file:
+        src: /opt/my-django-app/deploy/app.service
+        dest: /etc/systemd/system/app.service
+        state: link
+
+    - name: copy env-prod
+      copy:
+        src: ../.env-prod
+        dest: /opt/my-django-app/.env
+        owner: ubuntu
+        group: ubuntu
+        mode: '0755'
+
+    - name: Restart nginx
+      service:
+        name: nginx
+        state: restarted
+
+    - name: Restart app service
+      service:
+        name: app
+        state: restarted
+
+    - name: Ensure the service is running
+      become: true
+      systemd:
+        name: app.service
+        enabled: true
+        state: started
+        daemon_reload: true
+
+    - name: Create super user
+      shell: echo "from django.contrib.auth import get_user_model; User = get_user_model(); uu = User.objects.create_superuser('marc.r.leonard@gmail.com', 'asdasdasdasd'); uu.is_active=True; uu.save();" | /usr/bin/python3.10 /opt/my-django-app/manage.py shell
+
+#    - name: Create steve super user
+#      shell: echo "from django.contrib.auth import get_user_model; User = get_user_model(); uu = User.objects.create_superuser('jstephenwilson@gmail.com', 'qweqweqweqwe'); uu.is_active=True; uu.save();" | /usr/bin/python3.10 /opt/my-django-app/manage.py shell
+
+
+  handlers:
+    - name: restart nginx
+      service:
+        name: nginx
+        state: restarted

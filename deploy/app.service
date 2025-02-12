@@ -1,0 +1,11 @@
+[Unit]
+Description=My Django Project
+
+[Service]
+User=root
+Group=www-data
+WorkingDirectory=/opt/my-django-app
+ExecStart=/usr/bin/python3.12 -m uvicorn app.asgi:application --workers 2
+
+[Install]
+WantedBy=multi-user.target
