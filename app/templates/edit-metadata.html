@@ -1,18 +1,43 @@
 {% extends "_page_template.html" %}
 {% block body %}
-<div class="metadata-container">
-<a class="" href="/">&larr; Back</a>
-{% include "component/image-stack.html" %}
-    <h2>Metadata Entry</h2>
-    <label for="title">Title</label>
-    <input type="text" id="title" placeholder="Enter image title">
+    <div class="metadata-container">
+        <div class="container">
+            <a href="/" class="back-link">&larr; Back to swiping</a>
+            <div class="title">Park Day</div>
+            <div class="info">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0-5a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm-1 5h2v6h-2V7Zm0 8h2v2h-2v-2Z"></path>
+                </svg>
+                April 1, 1994 to May 13, 1994
+            </div>
+            <div class="info">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5 14.5 7.62 14.5 9s-1.12 2.5-2.5 2.5z"></path>
+                </svg>
+                Portland, Oregon / Oregon State Zoo
+            </div>
+            <div class="caption">Add a caption</div>
+            <br>
+        </div>
 
-    <label for="description">Description</label>
-    <textarea id="description" placeholder="Enter description"></textarea>
+        {#    {% include "component/image-stack.html" %}#}
+<hr>
+        <div style="display: flex;
+  flex-wrap: wrap;  /* Allows items to wrap to the next line */
+  gap: 10px;        /* Optional: Adds space between items */">
+            {% for asset in album_assets %}
+                <div class="image-card">
+                    <div class="image-container">
+                        <img src="/asset/{{ asset.id }}/thumb" alt="">
+                    </div>
+                    <div class="metadata">
+                        <p><i class="icon-calendar"></i> DATE</p>
+                        <p><i class="icon-location"></i> LOCATION</p>
+                        <p>{{ asset.id }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
 
-    <label for="tags">Tags</label>
-    <input type="text" id="tags" placeholder="Comma-separated tags">
-
-    <button id="saveBtn">Save Metadata</button>
-</div>
+    </div>
 {% endblock %}

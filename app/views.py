@@ -205,16 +205,26 @@ def index(request):
 	a = all_albums[0]
 	thumb = f"/asset/{a['albumThumbnailAssetId']}/thumb"
 	return render(request, "index.html",
-				  {"albums": [], "album_thumbnail": thumb, "album_name": a['albumName'], "album_uuid": a['id']})
+				  {
+					  "albums": [],
+					  "album_name": a['albumName'],
+					  "album_uuid": a['id'],
+					  "album_image_link": thumb,
+				  }
+	)
 
 
 def get_album(request, album_uuid):
-	album = get_object_or_404(Album, id=album_uuid)
+	# album = get_object_or_404(Album, id=album_uuid)
 	c = ImmichClient('http://localhost:2283/', "xnFmvnF4E2ijDXZPbCL8LjJm8kbdSwe85EvzD5VZA")
-	all_albums = c.list_albums()
-	a = all_albums[0]
+	a = c.get_album(album_uuid)
 	thumb = f"/asset/{a['albumThumbnailAssetId']}/thumb"
-	return render(request, "edit-metadata.html", {"albums": [], "album_thumbnail": thumb, "album_uuid": a['id']})
+	return render(request, "edit-metadata.html", {
+		"albums": [],
+		"album_thumbnail": thumb,
+		"album_uuid": a['id'],
+		"album_assets" : a['assets']
+	})
 
 
 def get_asset_thumbnail(request, asset_uuid):

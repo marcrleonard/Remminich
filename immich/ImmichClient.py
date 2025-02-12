@@ -24,6 +24,11 @@ class ImmichClient:
 		response = requests.get(url, headers=self.headers)
 		return self._handle_response(response)
 
+	def get_album(self, album_uuid:str):
+		url = f"{self.base_url}/api/albums/{album_uuid}"
+		response = requests.get(url, headers=self.headers)
+		return self._handle_response(response)
+
 	def search_assets(self, search_payload:SearchModel):
 		url = f"{self.base_url}/api/search/metadata"
 		response = requests.post(url, headers=self.headers, data=json.dumps(search_payload.model_dump_json()))
