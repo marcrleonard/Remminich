@@ -239,7 +239,11 @@ def get_album(request, album_uuid):
 						location_formatted += f", {state}"
 					else:
 						location_formatted += state
-				if country:
+				if all([
+					location_formatted=="",
+					country
+				]):
+					# only add the country if we got nothin else
 					location_formatted += f" ({country})"
 
 				locations.append(location_formatted)
