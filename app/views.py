@@ -219,11 +219,62 @@ def get_album(request, album_uuid):
 	c = ImmichClient('http://localhost:2283/', "xnFmvnF4E2ijDXZPbCL8LjJm8kbdSwe85EvzD5VZA")
 	a = c.get_album(album_uuid)
 	thumb = f"/asset/{a['albumThumbnailAssetId']}/thumb"
+
+	locations = []
+	dates = []
+	for asset in a['assets']:
+		metadata = asset['exifInfo']
+		long = metadata['longitude']
+		lat = metadata['longitude']
+		city = metadata['city']
+		state = metadata['state']
+		country = metadata['country']
+		if any([long, lat, city, state, country]):
+			if any([city, state, country]):
+				location_formatted = ""
+				if city:
+					location_formatted += city
+				if state:
+					if location_formatted != "":
+						location_formatted += f", {state}"
+					else:
+						location_formatted += state
+				if country:
+					location_formatted += f" ({country})"
+
+				locations.append(location_formatted)
+
+			elif any([long, lat]):
+				locations.append(f"({long}, {lat})")
+
+		date = metadata['dateTimeOriginal']
+		if date:
+			dates.append(date)
+
+	dates = [datetime.datetime.fromisoformat(ts[:-6]) for ts in dates]  # Remove timezone offset
+
+	# Sort dates
+	dates.sort()
+
+	# Format and display
+	formatted_dates = [date.strftime("%B %-d, %Y") for date in dates]
+
+	start_end_dates = []
+	if len(formatted_dates) > 1:
+		start_end_dates = [formatted_dates[0], formatted_dates[-1]]
+	elif len(formatted_dates) == 1:
+		start_end_dates = formatted_dates
+
+
+	summary_data = {
+		'locations': list(set(locations)),
+		'dates': start_end_dates
+	}
+
 	return render(request, "edit-metadata.html", {
-		"albums": [],
+		"immich": a,
 		"album_thumbnail": thumb,
-		"album_uuid": a['id'],
-		"album_assets" : a['assets']
+		"summary_data": summary_data,
 	})
 
 
