@@ -1,4 +1,5 @@
 import datetime
+import os
 
 from django.shortcuts import get_object_or_404, render, redirect
 from .forms import UserRegistrationForm, UserUpdateForm
@@ -25,6 +26,7 @@ from immich.ImmichClient import ImmichClient
 
 needs_email_verify = True
 
+c = ImmichClient(os.environ['IMMICH_ADDR'], os.environ['IMMICH_API_KEY'] )
 
 def _get_message(request, user):
 	r = render_to_string('template_activate_account.html', {
@@ -200,7 +202,6 @@ def profile(request):
 
 
 def index(request):
-	c = ImmichClient('http://localhost:2283/', "xnFmvnF4E2ijDXZPbCL8LjJm8kbdSwe85EvzD5VZA")
 	all_albums = c.list_albums()
 	a = all_albums[0]
 	thumb = f"/asset/{a['albumThumbnailAssetId']}/thumb"
@@ -216,7 +217,6 @@ def index(request):
 
 def get_album(request, album_uuid):
 	# album = get_object_or_404(Album, id=album_uuid)
-	c = ImmichClient('http://localhost:2283/', "xnFmvnF4E2ijDXZPbCL8LjJm8kbdSwe85EvzD5VZA")
 	a = c.get_album(album_uuid)
 	thumb = f"/asset/{a['albumThumbnailAssetId']}/thumb"
 
@@ -283,7 +283,6 @@ def get_album(request, album_uuid):
 
 
 def get_asset_thumbnail(request, asset_uuid):
-	c = ImmichClient('http://localhost:2283/', "xnFmvnF4E2ijDXZPbCL8LjJm8kbdSwe85EvzD5VZA")
 	r = c.get_thumbnail(asset_uuid)
 	return HttpResponse(r.content, content_type='image/jpeg')
 
