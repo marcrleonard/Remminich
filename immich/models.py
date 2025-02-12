@@ -2,6 +2,45 @@ from typing import List, Optional
 from uuid import UUID
 from pydantic import BaseModel, Field
 
+# PATCH /albums/:id
+class UpdateAlbumModel(BaseModel):
+    albumName: Optional[str] = None
+    albumThumbnailAssetId: Optional[str] = None
+    description: Optional[str] = None
+    isActivityEnabled: Optional[bool] = None
+    order: Optional[str] = None
+
+    class Config:
+        json_exclude_none = True
+
+# PUT /assets/:id
+class SingleAssetUpdateModel(BaseModel):
+    dateTimeOriginal: Optional[str] = None
+    description: Optional[str] = None
+    isArchived: Optional[bool] = None
+    isFavorite: Optional[bool] = None
+    latitude: Optional[float] = None
+    livePhotoVideoId: Optional[str] = None
+    longitude: Optional[float] = None
+    rating: Optional[int] = None
+
+    class Config:
+        # json_encoders = {None: lambda v: v if v is not None else ...}
+        json_exclude_none = True
+
+
+# PUT /assets
+class BulkUpdateAssetsModel(BaseModel):
+    dateTimeOriginal: Optional[str] = None
+    duplicateId: Optional[str] = None
+    ids: List[str] = Field(..., min_items=1)
+    isArchived: Optional[bool] = None
+    isFavorite: Optional[bool] = None
+    latitude: Optional[float] = None
+    longitude: Optional[float] = None
+    rating: Optional[int] = None
+
+
 class SearchModel(BaseModel):
     checksum: Optional[str] = None
     city: Optional[str] = None
@@ -51,4 +90,3 @@ class SearchModel(BaseModel):
         json_encoders = {
             UUID: str  # Ensure UUIDs are serialized as strings
         }
-        exclude_none = True  # Exclude fields that are None from serialization
