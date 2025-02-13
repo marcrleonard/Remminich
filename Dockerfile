@@ -1,24 +1,22 @@
-FROM ubuntu:latest
+# Use the official Python 3.12 image
+FROM python:3.12-slim
 
-# Install uv and Python 3.12
-RUN apt update && apt install -y curl && \
-    curl -LsSf https://astral.sh/uv/install.sh | sh && \
-    /root/.local/bin/uv python install 3.12 -v && \
-    ls /root/.local/share/uv/python && \
-    python3 -m venv /venv --python=3.12
-
-# Set the working directory
+# Set the working directory inside the container
 WORKDIR /app
 
-# Copy application files
+# Copy and install dependencies first (leveraging Docker cache)
+COPY requirements.txt .
+
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the rest of the application code
 COPY . .
 
-# Activate virtual environment and install dependencies
-RUN /venv/bin/pip install -r requirements.txt
-
 # Set environment variables
-ENV PATH="/venv/bin:$PATH"
+# Prevents buffering in logs
 ENV PYTHONUNBUFFERED=1
+# Optional, allows setting a different port via env
+ENV PORT=8000
 
 # Expose the port Django runs on
 EXPOSE 8000
