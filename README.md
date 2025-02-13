@@ -23,11 +23,23 @@ services:
     container_name: remminch
     image: ghcr.io/marcrleonard/remminich:latest
     ports:
-      - "8001:3000"
+      - "8001:8001"
     env_file:
       - .env
 ```
 
+In your `.env` file, add:
+```
+IMMICH_API_KEY=youApiKey
+IMMICH_URL=http://immich-server:2283/
+```
+Add your api key, and immich url The immmich URL is likely to be the as above, unless its been changed in your docker-compose file.
+
+Then, cd into where your immich docker compose is, and restart everything:
+```
+docker compose down
+docker compose up -d
+```
 
 
 ## Installing Python

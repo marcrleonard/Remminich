@@ -60,8 +60,11 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "debug_toolbar.middleware.DebugToolbarMiddleware"
 ]
+
+_debug = os.environ.get("DJANGO_DEBUG", "False")
+show_toolbar = _debug == "True"
 def show_toolbar(request):
-    return True
+    return show_toolbar
 DEBUG_TOOLBAR_CONFIG = {
     "SHOW_TOOLBAR_CALLBACK" : show_toolbar,
 }
