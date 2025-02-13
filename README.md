@@ -6,9 +6,8 @@
 
 ## *A self-hosted web app to facilitate family photo archiving*
 
-
-1. [Installing With Immich (Recommended)](#Running with Immich)
-2. [Bootstrapping for development](#Installing Python)
+[Installing With Immich (Recommended)](#running-with-immich)
+[Bootstrapping for development](#installing-python)
 
 ## Running with Immich
 
