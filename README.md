@@ -19,9 +19,9 @@ See the sample docker-compose-all-immich.yml file for reference.
 ```
 services:
   # Other services...
-  power-tools:
-    container_name: immich_power_tools
-    image: ghcr.io/varun-raj/immich-power-tools:latest
+  remminch:
+    container_name: remminch
+    image: ghcr.io/marcrleonard/remminich:latest
     ports:
       - "8001:3000"
     env_file:

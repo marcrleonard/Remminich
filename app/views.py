@@ -26,7 +26,7 @@ from immich.ImmichClient import ImmichClient
 
 needs_email_verify = True
 
-c = ImmichClient(os.environ['IMMICH_ADDR'], os.environ['IMMICH_API_KEY'] )
+c = ImmichClient(os.environ['IMMICH_URL'], os.environ['IMMICH_API_KEY'] )
 
 def _get_message(request, user):
 	r = render_to_string('template_activate_account.html', {
