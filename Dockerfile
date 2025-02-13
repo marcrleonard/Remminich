@@ -15,11 +15,9 @@ COPY . .
 # Set environment variables
 # Prevents buffering in logs
 ENV PYTHONUNBUFFERED=1
-# Optional, allows setting a different port via env
-ENV PORT=8000
 
 # Expose the port Django runs on
-EXPOSE 8000
+EXPOSE 8001
 
 # Run the Django application
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8001"]
