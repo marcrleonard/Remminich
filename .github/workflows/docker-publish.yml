@@ -1,0 +1,30 @@
+name: Publish Docker image to GHCR
+
+on:
+  push:
+    branches:
+      - main  # Runs when you push to the main branch
+
+jobs:
+  push_to_ghcr:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write  # Allows pushing to GHCR
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Log in to GitHub Container Registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $GITHUB_ACTOR --password-stdin
+
+      - name: Build and tag Docker image
+        run: |
+          IMAGE_NAME=ghcr.io/marcrleonard/remminich
+          docker build -t $IMAGE_NAME:latest .
+
+      - name: Push image to GHCR
+        run: |
+          IMAGE_NAME=ghcr.io/marcrleonard/remminich
+          docker push $IMAGE_NAME:latest
