@@ -1,7 +1,7 @@
 # **Immich family history app**
 
 <p align="center">
-  <img src="docs/ss.png" />
+  <img src="ss.png" />
 </p>
 
 ## *A self-hosted web app to facilitate family photo archiving*
