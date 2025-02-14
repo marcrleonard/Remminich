@@ -33,9 +33,13 @@
                         <img src="/asset/{{ asset.id }}/thumb" alt="">
                     </div>
                     <div class="metadata">
-                        <p><i class="icon-calendar"></i> DATE</p>
-                        <p><i class="icon-location"></i> LOCATION</p>
-                        <p>{{ asset.id }}</p>
+                        <p><i class="icon-calendar"></i> {{ asset.exifInfo.dateTimeOriginal }}</p>
+                        <p><i class="icon-location"></i> {{ asset.exifInfo.city }}, {{ asset.exifInfo.state }}</p>
+                        {% if asset.exifInfo.description != "" %}
+                            <p>{{ asset.exifInfo.description }}</p>
+                        {%  else %}
+                            <p>No Description.</p>
+                        {% endif %}
                     </div>
                 </div>
             {% endfor %}
