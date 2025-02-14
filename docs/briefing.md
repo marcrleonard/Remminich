@@ -6,19 +6,6 @@
 
 ## *A self-hosted web app to facilitate family photo archiving*
 
-## Installing Python
-1. `curl -LsSf https://astral.sh/uv/install.sh | sh`
-2. `uv python install 3.12`
-
-## Bootstrap Project
-1. `git clone https://github.com/marcrleonard/Remminich.git`
-2. `cd Remminich`
-3. `uv venv --python=3.12`
-4. `source .venv/bin/activate`
-5. `pip3 install -r requirements.txt`
-
-
-
 ## **Problem**
 
 ***TL;DR:** Immich is designed to handle modern ongoing storage and organization for digital photos, not a collective family archive of scanned analog photographs.*

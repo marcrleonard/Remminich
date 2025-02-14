@@ -47,6 +47,15 @@ class ImmichClient:
 		response = requests.put(url, headers=self.headers, data=pl)
 		return response
 
+	def get_place(self, search_str):
+		# http://localhost:2283/api/search/places?name=belgrade
+		import urllib.parse
+		safe_string = urllib.parse.quote_plus(search_str)
+		url = f"{self.base_url}/api/search/places?name={safe_string}"
+		response = requests.get(url, headers=self.headers)
+		print(response)
+		return self._handle_response(response)
+
 	def _handle_response(self, response, resp_type=None):
 		"""Handles HTTP responses and raises exceptions for errors."""
 		try:
@@ -60,9 +69,5 @@ class ImmichClient:
 
 if __name__ == "__main__":
 	c = ImmichClient('http://localhost:2283/', "xnFmvnF4E2ijDXZPbCL8LjJm8kbdSwe85EvzD5VZA")
-	r = c.update_assets(BulkUpdateAssetsModel(
-		ids=["5ab80c17-7146-4a58-bbaa-f9c01aa59e84"],
-		latitude=43.168880,
-		longitude=-72.972731,
-	))
-	print(r)
+	r = c.get_place("bozeman")
+	print(r.json())

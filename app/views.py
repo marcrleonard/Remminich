@@ -23,6 +23,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from .models import Album
 from immich.ImmichClient import ImmichClient
+from immich.models import BulkUpdateAssetsModel
 
 needs_email_verify = True
 
@@ -214,6 +215,10 @@ def index(request):
 				  }
 	)
 
+def search_places(request):
+	p = request.GET.get('name', '')
+	r = c.get_place(p)
+	return JsonResponse(r, safe=False)
 
 def get_album(request, album_uuid):
 	# album = get_object_or_404(Album, id=album_uuid)
@@ -263,15 +268,22 @@ def get_album(request, album_uuid):
 	# Format and display
 	formatted_dates = [date.strftime("%B %-d, %Y") for date in dates]
 
-	start_end_dates = []
+	start_end_dates = ""
 	if len(formatted_dates) > 1:
-		start_end_dates = [formatted_dates[0], formatted_dates[-1]]
+		start_end_dates = f"{formatted_dates[0]} to {formatted_dates[-1]}"
 	elif len(formatted_dates) == 1:
-		start_end_dates = formatted_dates
+		start_end_dates = formatted_dates[0]
 
+	location_str = "No locations."
+
+	locations = list(set(locations))
+	if locations:
+		location_str = locations[0]
+		if len(locations) > 1:
+			location_str += f" and {len(locations)-1} more"
 
 	summary_data = {
-		'locations': list(set(locations)),
+		'locations': location_str,
 		'dates': start_end_dates
 	}
 
@@ -288,8 +300,8 @@ def get_asset_thumbnail(request, asset_uuid):
 
 
 @csrf_exempt
-def create_album(request):
+def update_album(request):
 	if request.method == 'POST':
-		title = request.POST.get('title', '')
-		album = Album.objects.create(title=title)
+
+		c.update_assets(BulkUpdateAssetsModel(ids=[], ))
 		return JsonResponse({"id": str(album.id), "title": album.title})

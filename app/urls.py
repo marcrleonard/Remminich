@@ -25,7 +25,9 @@ urlpatterns = [
     path('', views.index, name='root'),
     path('asset/<uuid:asset_uuid>/thumb/', views.get_asset_thumbnail, name='get_asset_thumbnail'),
     path('albums/<uuid:album_uuid>/', views.get_album, name='get_album'),
-    path('albums/', views.create_album, name='create_album'),
+    # path('albums/', views.create_album, name='create_album'),
+    path('albums/update', views.update_album, name='create_album'),
+    path('search/places', views.search_places, name='search_places'),
 
     ####
 

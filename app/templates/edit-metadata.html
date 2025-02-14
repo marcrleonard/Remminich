@@ -1,124 +1,28 @@
 {% extends "_page_template.html" %}
 {% block body %}
-        <script>
-        function openModal() {
-            document.querySelector('.modal-overlay').style.display = 'block';
-            document.querySelector('.modal').style.display = 'block';
-        }
-        function closeModal() {
-            document.querySelector('.modal-overlay').style.display = 'none';
-            document.querySelector('.modal').style.display = 'none';
-        }
-    </script>
-    <style>
-       .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            display: none;
-        }
-        .modal {
-            background: white;
-            width: 400px;
-            border-radius: 15px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-        .modal .text-container {
-            padding: 20px;
-        }
-        .modal h2 {
-            margin-top: 0;
-        }
-        .modal p {
-            font-size: 14px;
-            color: #333;
-        }
-        .date-inputs {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin: 15px 0;
-        }
-        .date-inputs input {
-            width: 80px;
-            padding: 5px;
-            text-align: center;
-            font-size: 16px;
-            border: 1px solid #ccc;
-        }
-        .modal-buttons {
-            display: flex;
-            justify-content: space-between;
-        }
-        .cancel, .save {
-            width: 50%;
-            padding: 10px;
-            font-size: 16px;
-            border: none;
-            cursor: pointer;
-        }
-        .cancel {
-            background: #d9534f;
-            color: white;
-            border-radius: 0 0 0 15px;
-        }
-        .save {
-            background: #5cb85c;
-            color: white;
-            border-radius: 0 0 15px 0;
-        }
-    </style>
-        <div class="modal-overlay" onclick="closeModal()"></div>
-        <div class="modal">
-        <div class="text-container">
-            <h2>Edit album dates</h2>
-            <p>Select the date on which the <strong>first</strong> photo in this album was taken. If you don’t know an exact date, fill in what you know.</p>
-            <p><strong>All dates in this album will be adjusted relative to this date.<br>This cannot be undone.</strong></p>
-            <div class="date-inputs">
-                <input type="text" placeholder="Month" value="February">
-                <input type="text" placeholder="Day" value="13">
-                <input type="text" placeholder="Year" value="1994">
-            </div>
-        </div>
-
-        <div class="modal-buttons">
-            <button class="cancel" onclick="closeModal()">Cancel</button>
-            <button class="save">Save</button>
-        </div>
-    </div>
 
     <div class="metadata-container">
+{#        {% include "component/edit-modal.html" %}#}
+        {% include "component/edit-location.html" %}
         <div class="container">
             <a href="/" class="back-link">&larr; Back to swiping</a>
-        <button onclick="openModal()">Open Modal</button>
 
             <div class="title">{{ immich.albumName }}</div>
             <div class="info">
-                <svg viewBox="0 0 24 24">
-                    <path d="M12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0-5a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm-1 5h2v6h-2V7Zm0 8h2v2h-2v-2Z"></path>
-                </svg>
-                {{ summary_data.dates }}
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+ <path d="M21 10H3M16 2V6M8 2V6M7.8 22H16.2C17.8802 22 18.7202 22 19.362 21.673C19.9265 21.3854 20.3854 20.9265 20.673 20.362C21 19.7202 21 18.8802 21 17.2V8.8C21 7.11984 21 6.27976 20.673 5.63803C20.3854 5.07354 19.9265 4.6146 19.362 4.32698C18.7202 4 17.8802 4 16.2 4H7.8C6.11984 4 5.27976 4 4.63803 4.32698C4.07354 4.6146 3.6146 5.07354 3.32698 5.63803C3 6.27976 3 7.11984 3 8.8V17.2C3 18.8802 3 19.7202 3.32698 20.362C3.6146 20.9265 4.07354 21.3854 4.63803 21.673C5.27976 22 6.11984 22 7.8 22Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+ </svg>
+                {{ summary_data.dates }} <div style="padding-left: 10px; cursor: pointer" onclick="openModal()">{% include "component/pencil-svg.html" %}</div>
             </div>
             <div class="info">
-                <svg viewBox="0 0 24 24">
+                <svg stroke="black" stroke-width="2px" viewBox="0 0 24 24">
                     <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5 14.5 7.62 14.5 9s-1.12 2.5-2.5 2.5z"></path>
                 </svg>
-                {{ summary_data.locations }}
+                {{ summary_data.locations }}  <div style="padding-left: 10px; cursor: pointer" onclick="openModal()">{% include "component/pencil-svg.html" %}</div>
             </div>
             <div class="caption">Add a caption</div>
             <br>
         </div>
-
-        {#    {% include "component/image-stack.html" %}#}
 <hr>
         <div style="display: flex;
   flex-wrap: wrap;  /* Allows items to wrap to the next line */

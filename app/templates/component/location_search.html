@@ -1,0 +1,68 @@
+<input type="text" id="location-input" placeholder="Type a location..." autocomplete="off">
+<div id="suggestions" style="position: absolute; background: white; width: 200px;"></div>
+<p id="selected"></p>
+
+<script>
+let debounceTimer;
+const input = document.getElementById("location-input");
+const suggestionsContainer = document.getElementById("suggestions");
+let selectedCoords = null;
+
+input.addEventListener("input", () => {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(fetchSuggestions, 150);
+});
+
+async function fetchSuggestions() {
+    const query = input.value.trim();
+    if (query.length < 2) {
+        suggestionsContainer.innerHTML = "";
+        return;
+    }
+
+    try {
+        // Replace with your actual API endpoint
+        const response = await fetch(`/search/places?name=${query}`);
+        const suggestions = await response.json();
+        displaySuggestions(suggestions);
+    } catch (error) {
+        console.error("Error fetching suggestions:", error);
+    }
+}
+
+function displaySuggestions(suggestions) {
+    suggestionsContainer.innerHTML = "";
+
+    suggestions.forEach(({ name, admin1name, latitude, longitude }) => {
+        const suggestion = document.createElement("div");
+        suggestion.textContent = `${name}, ${admin1name}`;
+        suggestion.style.cursor = "pointer";
+        suggestion.style.padding = "5px";
+        suggestion.style.borderBottom = "1px solid #eee";
+        suggestion.addEventListener("click", () => selectSuggestion(name, latitude, longitude));
+
+        suggestionsContainer.appendChild(suggestion);
+    });
+}
+
+function selectSuggestion(name, lat, lon) {
+    input.value = name;
+    selectedCoords = { latitude: lat, longitude: lon };
+    console.log("Selected:", selectedCoords);
+    suggestionsContainer.innerHTML = "";
+    document.getElementById('selected').innerHTML = selectedCoords.latitude + " " + selectedCoords.longitude
+}
+</script>
+
+
+{#<script src='https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.js'></script>#}
+{#<link href='https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.css' rel='stylesheet' />#}
+{#<div id='map' style='width: 400px; height: 300px;'></div>#}
+{#<script>#}
+{#var map = new maplibregl.Map({#}
+{#  container: 'map',#}
+{#  style: 'https://demotiles.maplibre.org/style.json', // stylesheet location#}
+{#  center: [-74.5, 40], // starting position [lng, lat]#}
+{#  zoom: 9 // starting zoom#}
+{#});#}
+{#</script>#}
