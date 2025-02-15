@@ -6,15 +6,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reminnich</title>
 
-        {% load static %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Radio+Canada:ital,wght@0,300..700;1,300..700&display=swap" rel="stylesheet">
+    {% load static %}
     <link rel="stylesheet" href="{% static 'styles.css' %}">
     {% unicorn_scripts %}
 </head>
 
 <body>
 {% csrf_token %}
+
 <header class="app-header">
     <h1 class="logo">Remminich</h1>
+    <nav class="nav">
+        <ul class="nav-items">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Services</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+    </nav>
 </header>
 
 {% block body %}
