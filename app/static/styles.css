@@ -43,6 +43,12 @@ p {
     font-size: 14px;
 }
 
+.thumbnail-container {
+    display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
 /* FLEX CONTAINER FOR LAYOUT */
 .photo-container {
     display: flex;

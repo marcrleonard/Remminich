@@ -19,12 +19,14 @@ from django.contrib import admin
 from django.urls import path, include
 from django.views.generic.base import RedirectView
 from .admin_views import custom_admin
+import django_unicorn
+
 
 urlpatterns = [
 
     path('', views.index, name='root'),
     path('asset/<uuid:asset_uuid>/thumb/', views.get_asset_thumbnail, name='get_asset_thumbnail'),
-    path('albums/<uuid:album_uuid>/', views.get_album, name='get_album'),
+    path('albums/<uuid:album_uuid>/', views.get_album, name='album_detail'),
     # path('albums/', views.create_album, name='create_album'),
     path('albums/update', views.update_album, name='create_album'),
     path('search/places', views.search_places, name='search_places'),
@@ -42,6 +44,7 @@ urlpatterns = [
     path('register/submit', views.register_submit, name='register_submit'),
     path('activate/<uidb64>/<token>', views.activate, name='activate'),
     path("accounts/logout/", views.logout),
+    path("unicorn/", include("django_unicorn.urls")),
 
     # about the login/logout/register endpoints:
     # https://learndjango.com/tutorials/django-login-and-logout-tutorial

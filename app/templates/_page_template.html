@@ -1,20 +1,25 @@
+{% load unicorn %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reminnich</title>
-    <link rel="stylesheet" href="{{ static('styles.css') }}">
+
+        {% load static %}
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    {% unicorn_scripts %}
 </head>
 
 <body>
+{% csrf_token %}
 <header class="app-header">
     <h1 class="logo">Remminich</h1>
 </header>
 
 {% block body %}
 {% endblock %}
-<script src="{{ static('script.js')}}"></script>
+<script src=""></script>
 
 </body>
 

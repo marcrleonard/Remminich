@@ -1,9 +1,9 @@
 from immich.models import SearchModel, BulkUpdateAssetsModel
 import requests
 import json
+import os
 
-
-class ImmichClient:
+class _ImmichClient:
 	def __init__(self, base_url: str, api_key: str):
 		"""
 		Initializes the ImmichClient wrapper.
@@ -65,6 +65,8 @@ class ImmichClient:
 			return {"error": str(err), "status_code": response.status_code}
 		except ValueError:
 			return {"error": "Invalid JSON response", "status_code": response.status_code}
+
+ImmichClient = _ImmichClient(os.environ['IMMICH_URL'], os.environ['IMMICH_API_KEY'] )
 
 
 if __name__ == "__main__":

@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django_unicorn",
     "app",
     "debug_toolbar",
 ]
@@ -92,14 +93,14 @@ PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 import os
 TEMPLATES = [
-    {
-        'BACKEND': 'django.template.backends.jinja2.Jinja2',
-        'DIRS': [os.path.join(BASE_DIR, 'app', 'templates')],  # Adjust as needed
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'environment': 'app.jinja2_environment.environment',
-        },
-    },
+    # {
+    #     'BACKEND': 'django.template.backends.jinja2.Jinja2',
+    #     'DIRS': [os.path.join(BASE_DIR, 'app', 'templates')],  # Adjust as needed
+    #     'APP_DIRS': True,
+    #     'OPTIONS': {
+    #         'environment': 'app.jinja2_environment.environment',
+    #     },
+    # },
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [os.path.join(BASE_DIR, 'app', 'templates')],  # Ensure your templates directory is set correctly

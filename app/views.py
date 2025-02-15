@@ -27,8 +27,6 @@ from immich.models import BulkUpdateAssetsModel
 
 needs_email_verify = True
 
-c = ImmichClient(os.environ['IMMICH_URL'], os.environ['IMMICH_API_KEY'] )
-
 def _get_message(request, user):
 	r = render_to_string('template_activate_account.html', {
 		'user': user.username,
@@ -203,7 +201,7 @@ def profile(request):
 
 
 def index(request):
-	all_albums = c.list_albums()
+	all_albums = ImmichClient.list_albums()
 	a = all_albums[0]
 	thumb = f"/asset/{a['albumThumbnailAssetId']}/thumb"
 	return render(request, "index.html",
@@ -217,12 +215,12 @@ def index(request):
 
 def search_places(request):
 	p = request.GET.get('name', '')
-	r = c.get_place(p)
+	r = ImmichClient.get_place(p)
 	return JsonResponse(r, safe=False)
 
 def get_album(request, album_uuid):
 	# album = get_object_or_404(Album, id=album_uuid)
-	a = c.get_album(album_uuid)
+	a = ImmichClient.get_album(album_uuid)
 	thumb = f"/asset/{a['albumThumbnailAssetId']}/thumb"
 
 	locations = []
@@ -295,7 +293,7 @@ def get_album(request, album_uuid):
 
 
 def get_asset_thumbnail(request, asset_uuid):
-	r = c.get_thumbnail(asset_uuid)
+	r = ImmichClient.get_thumbnail(asset_uuid)
 	return HttpResponse(r.content, content_type='image/jpeg')
 
 
@@ -303,5 +301,5 @@ def get_asset_thumbnail(request, asset_uuid):
 def update_album(request):
 	if request.method == 'POST':
 
-		c.update_assets(BulkUpdateAssetsModel(ids=[], ))
+		ImmichClient.update_assets(BulkUpdateAssetsModel(ids=[], ))
 		return JsonResponse({"id": str(album.id), "title": album.title})

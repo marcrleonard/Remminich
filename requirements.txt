@@ -5,3 +5,4 @@ requests
 six
 pydantic
 python-dotenv
+django_unicorn>=0.62.0

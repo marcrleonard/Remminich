@@ -12,7 +12,6 @@
 
             <div class="photo-card">
                 <img src="{{ album_image_link }}" alt="" class="photo">
-{#                <img src="https://placehold.co/800x600" alt="" class="photo">#}
                 <h2>{{album_name}}</h2>
                 <div class="photo-info">
                     <div class="meta">
@@ -23,7 +22,7 @@
                 </div>
             </div>
 
-            <a class="btn go" href="/albums/{{album_uuid}}">Let's go! →</a>
+        <a class="btn go" href="{% url 'album_detail' album_uuid %}">Let's go! →</a>
         </div>
     </div>
 
