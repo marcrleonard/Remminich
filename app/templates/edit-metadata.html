@@ -42,7 +42,17 @@
                      onclick="document.getElementById('editLocationModal').style.display='block'">{% include "component/pencil-svg.html" %}</div>
             </div>
             <div class="caption"
-            onclick="document.getElementById('captionModal').style.display='block'">Add a caption</div>
+            onclick="document.getElementById('captionModal').style.display='block'">
+                {% if immich.description %}
+                    Edit caption
+                {% else %}
+                    Add a caption
+                {% endif %}
+            </div>
+            {% if immich.description %}
+                    <p>{{ immich.description }}</p>
+                {% endif %}
+
 
             <br>
         </div>
