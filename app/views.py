@@ -289,6 +289,7 @@ def get_album(request, album_uuid):
 		"immich": a,
 		"album_thumbnail": thumb,
 		"summary_data": summary_data,
+
 	})
 
 
