@@ -76,7 +76,7 @@
                         <img src="/asset/{{ asset.id }}/thumb" alt="">
                     </div>
                     <div class="metadata">
-                        <p><i class="icon-calendar"></i> {{ asset.exifInfo.dateTimeOriginal }}</p>
+                        <p><i class="icon-calendar"></i> {{ asset.dateHuman }}</p>
                         <p><i class="icon-location"></i> {{ asset.exifInfo.city }}, {{ asset.exifInfo.state }}</p>
                         {% if asset.exifInfo.description != "" %}
                             <p>{{ asset.exifInfo.description }}</p>

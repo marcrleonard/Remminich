@@ -202,7 +202,11 @@ def profile(request):
 
 def index(request):
 	all_albums = ImmichClient.list_albums()
-	a = all_albums[0]
+	first = all_albums[0]
+	a = ImmichClient.get_album(first['id'])
+
+	summary_data = _get_summary_data(a)
+
 	thumb = f"/asset/{a['albumThumbnailAssetId']}/thumb"
 	return render(request, "index.html",
 				  {
@@ -210,6 +214,7 @@ def index(request):
 					  "album_name": a['albumName'],
 					  "album_uuid": a['id'],
 					  "album_image_link": thumb,
+					  "summary_data":summary_data
 				  }
 	)
 
@@ -218,14 +223,10 @@ def search_places(request):
 	r = ImmichClient.get_place(p)
 	return JsonResponse(r, safe=False)
 
-def get_album(request, album_uuid):
-	# album = get_object_or_404(Album, id=album_uuid)
-	a = ImmichClient.get_album(album_uuid)
-	thumb = f"/asset/{a['albumThumbnailAssetId']}/thumb"
-
+def _get_summary_data(assetResp: dict):
 	locations = []
 	dates = []
-	for asset in a['assets']:
+	for asset in assetResp['assets']:
 		metadata = asset['exifInfo']
 		long = metadata['longitude']
 		lat = metadata['longitude']
@@ -243,7 +244,7 @@ def get_album(request, album_uuid):
 					else:
 						location_formatted += state
 				if all([
-					location_formatted=="",
+					location_formatted == "",
 					country
 				]):
 					# only add the country if we got nothin else
@@ -278,12 +279,25 @@ def get_album(request, album_uuid):
 	if locations:
 		location_str = locations[0]
 		if len(locations) > 1:
-			location_str += f" and {len(locations)-1} more"
+			location_str += f" and {len(locations) - 1} more"
 
-	summary_data = {
+	return {
 		'locations': location_str,
 		'dates': start_end_dates
 	}
+def get_album(request, album_uuid):
+	# album = get_object_or_404(Album, id=album_uuid)
+	a = ImmichClient.get_album(album_uuid)
+	thumb = f"/asset/{a['albumThumbnailAssetId']}/thumb"
+
+	summary_data = _get_summary_data(a)
+
+	for asset in a['assets']:
+		# enrich the date
+		aa = asset['exifInfo']['dateTimeOriginal']
+		asd = datetime.datetime.fromisoformat(aa[:-6])
+		human  = asd.strftime("%B %-d, %Y")
+		asset['dateHuman'] = human
 
 	return render(request, "edit-metadata.html", {
 		"immich": a,

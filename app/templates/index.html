@@ -12,12 +12,11 @@
 
             <div class="photo-card">
                 <img src="{{ album_image_link }}" alt="" class="photo">
-                <h2>{{album_name}}</h2>
+                <h2 class="album-cover-title" >{{album_name}}</h2>
                 <div class="photo-info">
                     <div class="meta">
-                        <p><strong>Dates:</strong> Unknown</p>
-                        <p><strong>Comments:</strong> 3</p>
-                        <p><strong>Location:</strong> Oregon State Zoo, Unknown</p>
+                        <p><strong>Dates:</strong> {{ summary_data.dates }}</p>
+                        <p><strong>Location:</strong> {{ summary_data.locations }}</p>
                     </div>
                 </div>
             </div>
