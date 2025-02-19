@@ -21,8 +21,8 @@ See the sample docker-compose-all-immich.yml file for reference.
 ```
 services:
   # Other services...
-  remminch:
-    container_name: remminch
+  remminich:
+    container_name: remminich
     image: ghcr.io/marcrleonard/remminich:latest
     ports:
       - "8001:8001"
