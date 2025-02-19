@@ -15,6 +15,10 @@
             {% unicorn "offset-time-modal" album_id=immich.id assets=immich.assets %}
         </div>
 
+        <div style="display:none" id="captionModal">
+            {% unicorn "caption-modal" album_id=immich.id caption=immich.description %}
+        </div>
+
 
         <div class="container">
             <a href="/" class="back-link">&larr; Back to swiping</a>
@@ -37,7 +41,9 @@
                 <div style="padding-left: 10px; cursor: pointer"
                      onclick="document.getElementById('editLocationModal').style.display='block'">{% include "component/pencil-svg.html" %}</div>
             </div>
-            <div class="caption">Add a caption</div>
+            <div class="caption"
+            onclick="document.getElementById('captionModal').style.display='block'">Add a caption</div>
+
             <br>
         </div>
         <hr>

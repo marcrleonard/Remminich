@@ -1,4 +1,4 @@
-from immich.models import SearchModel, BulkUpdateAssetsModel
+from immich.models import SearchModel, BulkUpdateAssetsModel, UpdateAlbumModel
 import requests
 import json
 import os
@@ -22,6 +22,12 @@ class _ImmichClient:
 	def list_albums(self):
 		url = f"{self.base_url}/api/albums"
 		response = requests.get(url, headers=self.headers)
+		return self._handle_response(response)
+
+	def update_album(self, album_Id:str, update: UpdateAlbumModel):
+		# PATCH /albums/:id
+		url = f"{self.base_url}/api/albums/{album_Id}"
+		response = requests.patch(url, headers=self.headers, data=update.model_dump_json(exclude_unset=True))
 		return self._handle_response(response)
 
 	def get_album(self, album_uuid:str):
