@@ -11,6 +11,11 @@
             {% unicorn "edit-location-modal" album_id=immich.id assets=immich.assets %}
         </div>
 
+        <div style="display:none" id="offsetTimeModal">
+            {% unicorn "offset-time-modal" album_id=immich.id assets=immich.assets %}
+        </div>
+
+
         <div class="container">
             <a href="/" class="back-link">&larr; Back to swiping</a>
 
@@ -22,7 +27,7 @@
                 </svg>
                 {{ summary_data.dates }}
                 <div style="padding-left: 10px; cursor: pointer"
-                     onclick="openModal()">{% include "component/pencil-svg.html" %}</div>
+                     onclick="document.getElementById('offsetTimeModal').style.display='block'">{% include "component/pencil-svg.html" %}</div>
             </div>
             <div class="info">
                 <svg stroke="black" stroke-width="2px" viewBox="0 0 24 24">
