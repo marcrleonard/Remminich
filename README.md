@@ -53,8 +53,10 @@ docker compose up -d
 2. `cd Remminich`
 3. `uv venv --python=3.12`
 4. `source .venv/bin/activate`
-5. `pip3 install -r requirements.txt`
-
+5. `uv pip install -r requirements.txt`
+6. Create a `.env` file. It should contain ```IMMICH_API_KEY=youApiKey
+IMMICH_URL=http://immich-server:2283/```
+6. `python manage.py runserver 0.0.0.0:8000`
 
 
 ## **Problem**
