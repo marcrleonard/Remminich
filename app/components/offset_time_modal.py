@@ -33,11 +33,6 @@ class OffsetTimeModalView(UnicornView):
                             dateTimeOriginal=new_time
                         ))
 
-        # ImmichClient.update_assets(BulkUpdateAssetsModel(
-        #     ids=[asset['id'] for asset in self.assets],
-        #     latitude=self.chosen['latitude'],
-        #     longitude=self.chosen['longitude']
-        # ))
         return redirect('album_detail', album_uuid=self.album_id)
 
     def mount(self):
